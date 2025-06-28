@@ -7,8 +7,9 @@ import { eq, and } from "drizzle-orm";
 // GET - Fetch a single post by slug
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
+  const { slug } = context.params;
   try {
     const post = await db
       .select({
@@ -27,7 +28,7 @@ export async function GET(
       })
       .from(posts)
       .leftJoin(usersTable, eq(posts.authorId, usersTable.id))
-      .where(eq(posts.slug, params.slug))
+      .where(eq(posts.slug, slug))
       .limit(1);
 
     if (!post.length) {
@@ -50,8 +51,9 @@ export async function GET(
 // PUT - Update a post
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
+  const { slug } = context.params;
   try {
     const session = await getSession();
     if (!session) {
@@ -76,7 +78,7 @@ export async function PUT(
       .from(posts)
       .where(
         and(
-          eq(posts.slug, params.slug),
+          eq(posts.slug, slug),
           eq(posts.authorId, session.userId as string)
         )
       )
@@ -104,7 +106,7 @@ export async function PUT(
         content,
         updatedAt: new Date(),
       })
-      .where(eq(posts.slug, params.slug))
+      .where(eq(posts.slug, slug))
       .returning();
 
     return NextResponse.json({ post: updatedPost[0] });
@@ -120,8 +122,9 @@ export async function PUT(
 // DELETE - Delete a post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
+  const { slug } = context.params;
   try {
     const session = await getSession();
     if (!session) {
@@ -137,7 +140,7 @@ export async function DELETE(
       .from(posts)
       .where(
         and(
-          eq(posts.slug, params.slug),
+          eq(posts.slug, slug),
           eq(posts.authorId, session.userId as string)
         )
       )
@@ -150,7 +153,7 @@ export async function DELETE(
       );
     }
 
-    await db.delete(posts).where(eq(posts.slug, params.slug));
+    await db.delete(posts).where(eq(posts.slug, slug));
 
     return NextResponse.json({ message: "Post deleted successfully" });
   } catch (error) {
