@@ -7,9 +7,9 @@ import { eq, and } from "drizzle-orm";
 // GET - Fetch a single post by slug
 export async function GET(
   request: NextRequest,
-  context: { params: { slug: string } }
+  context: { params: Record<string, string> }
 ) {
-  const { slug } = context.params;
+  const slug = context.params.slug;
   try {
     const post = await db
       .select({
@@ -51,9 +51,9 @@ export async function GET(
 // PUT - Update a post
 export async function PUT(
   request: NextRequest,
-  context: { params: { slug: string } }
+  context: { params: Record<string, string> }
 ) {
-  const { slug } = context.params;
+  const slug = context.params.slug;
   try {
     const session = await getSession();
     if (!session) {
@@ -122,9 +122,9 @@ export async function PUT(
 // DELETE - Delete a post
 export async function DELETE(
   request: NextRequest,
-  context: { params: { slug: string } }
+  context: { params: Record<string, string> }
 ) {
-  const { slug } = context.params;
+  const slug = context.params.slug;
   try {
     const session = await getSession();
     if (!session) {
