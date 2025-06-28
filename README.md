@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blog Application
+
+A modern, full-featured blog application built with Next.js 15, TypeScript, and Drizzle ORM.
+
+## Features
+
+### 🔐 Authentication
+- **User Registration**: Secure user registration with email and password
+- **User Login**: JWT-based authentication with session management
+- **Logout**: Secure logout with session cleanup
+- **Protected Routes**: Middleware-based route protection
+
+### 📝 Blog Posts
+- **Create Posts**: Rich text editor for creating new blog posts
+- **View Posts**: Beautiful post display with author information
+- **Edit Posts**: Authors can edit their own posts
+- **Delete Posts**: Authors can delete their own posts
+- **Post Slugs**: SEO-friendly URLs for posts
+
+### 🔍 Search Functionality
+- **Full-Text Search**: Search across post titles, descriptions, and content
+- **Real-time Results**: Instant search results with highlighting
+- **Search Page**: Dedicated search page with advanced features
+
+### 🎨 User Interface
+- **Modern Design**: Clean, responsive design with Tailwind CSS
+- **Dark Mode**: Theme switching with next-themes
+- **Toast Notifications**: User feedback with Sonner
+- **Loading States**: Smooth loading animations
+- **Responsive Layout**: Mobile-first responsive design
+
+### 🛠 Technical Features
+- **TypeScript**: Full type safety throughout the application
+- **Database**: PostgreSQL with Drizzle ORM
+- **Form Validation**: Zod schema validation with React Hook Form
+- **Error Handling**: Comprehensive error handling and user feedback
+- **Performance**: Optimized with Next.js 15 and Turbopack
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- PostgreSQL database
+- npm or yarn
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd blog
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env.local` file with:
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/blog_db"
+   JWT_SECRET="your-secret-key-here"
+   ```
+
+4. **Set up the database**
+   ```bash
+   npm run drizzle:generate
+   # Run the generated SQL in your PostgreSQL database
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   Navigate to `http://localhost:3000`
+
+## Project Structure
+
+```
+blog/
+├── src/
+│   ├── app/                    # Next.js app router
+│   │   ├── api/               # API routes
+│   │   │   ├── login/         # Authentication endpoints
+│   │   │   ├── register/
+│   │   │   ├── logout/
+│   │   │   ├── session/
+│   │   │   ├── posts/         # Blog post endpoints
+│   │   │   └── search/        # Search endpoint
+│   │   ├── auth/              # Authentication pages
+│   │   ├── post/              # Blog post pages
+│   │   ├── search/            # Search page
+│   │   └── profile/           # User profile (placeholder)
+│   ├── components/            # Reusable components
+│   │   ├── auth/              # Authentication components
+│   │   ├── ui/                # UI components
+│   │   ├── layouts/           # Layout components
+│   │   └── theme/             # Theme components
+│   └── lib/                   # Utility libraries
+│       ├── db/                # Database configuration
+│       └── session/           # Session management
+├── drizzle/                   # Database migrations
+└── public/                    # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Endpoints
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Authentication
+- `POST /api/register` - User registration
+- `POST /api/login` - User login
+- `POST /api/logout` - User logout
+- `GET /api/session` - Get current session
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Blog Posts
+- `GET /api/posts` - Get all posts
+- `POST /api/posts` - Create new post
+- `GET /api/posts/[slug]` - Get single post
+- `PUT /api/posts/[slug]` - Update post
+- `DELETE /api/posts/[slug]` - Delete post
 
-## Learn More
+### Search
+- `GET /api/search?q=query` - Search posts
 
-To learn more about Next.js, take a look at the following resources:
+## Database Schema
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Users Table
+- `id` - Primary key
+- `name` - User's full name
+- `email` - Unique email address
+- `password` - Hashed password
+- `createdAt` - Account creation timestamp
+- `updatedAt` - Last update timestamp
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Posts Table
+- `id` - Primary key
+- `title` - Post title
+- `description` - Post description
+- `slug` - URL-friendly slug
+- `content` - Post content
+- `authorId` - Foreign key to users table
+- `createdAt` - Post creation timestamp
+- `updatedAt` - Last update timestamp
 
-## Deploy on Vercel
+### Sessions Table
+- `id` - Primary key
+- `userId` - Foreign key to users table
+- `token` - Session token
+- `expiresAt` - Session expiration
+- `ipAddress` - User's IP address
+- `userAgent` - User's browser info
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+
