@@ -77,7 +77,7 @@ export async function PUT(
       .where(
         and(
           eq(posts.slug, params.slug),
-          eq(posts.authorId, session.userId)
+          eq(posts.authorId, session.userId as string)
         )
       )
       .limit(1);
@@ -138,7 +138,7 @@ export async function DELETE(
       .where(
         and(
           eq(posts.slug, params.slug),
-          eq(posts.authorId, session.userId)
+          eq(posts.authorId, session.userId as string)
         )
       )
       .limit(1);
